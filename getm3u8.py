@@ -36,7 +36,13 @@ async def get_ts(ts_url, savepath, filename):
 async def main(url, savepath):
     absurl = url.replace(os.path.basename(url), '')
     files = get_m3u8(url)
-    for filename in files:
+    total = len(files)
+    for index, filename in enumerate(files):
+        index = index + 1
+        rate = int(index / total * 100)
+        print('{filename}  {rate} {none} {index}/{total} {percent} %'\
+            .format(filename=filename, rate='❤' * rate, none=' ' * (100 - rate), 
+            index=index, total=total, percent=round((index / total) * 100, 2)))
         await get_ts(absurl + filename, savepath, filename)
 
 
@@ -45,6 +51,9 @@ if __name__ == '__main__':
     if len(args) > 2:
         loop = asyncio.get_event_loop()
         savepath = args[2] if args[2][-1] == '/' else args[2] + '/'
+        if not os.path.exists(savepath) or not os.path.isdir(savepath):
+            print('No such file or directory: ' + savepath)
+            exit(1)
         tasks = [main(args[1], savepath)]
         loop.run_until_complete(asyncio.wait(tasks))
         while True:
