@@ -61,7 +61,8 @@ if __name__ == '__main__':
             if loop.is_running():
                 time.sleep(1)
             else:
-                ffmpeg.input(savepath + '/filelist.txt', format='concat', safe=0).output(savepath + 'fullvideo.mp4', c='copy').run()
+                # 不知道为什么出现了acc的编码错误问题，加上后面的就好了。
+                ffmpeg.input(savepath + '/filelist.txt', format='concat', safe=0).output(savepath + 'fullvideo.mp4', c='copy', **{'absf': 'aac_adtstoasc'}).run()
                 print(savepath + 'fullvideo.mp4 is concat')
                 break
     else:
