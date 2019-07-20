@@ -13,6 +13,7 @@ import requests
 """
 python3 getm3u8.py https://www.baidu.com/index.m3u8 /home/lisi/video
 
+需要安装ffmpeg-python包以及ffmpeg软件
 """
 
 
