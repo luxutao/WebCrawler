@@ -37,8 +37,12 @@ async def get_ts(ts_url, savepath, filename):
 async def main(url, savepath):
     absurl = url.replace(os.path.basename(url), '')
     files = get_m3u8(url)
+    if files[0][0] == '/':
+        sp = url.split('/')
+        absurl = '%s//%s%s' % (sp[0], sp[2], files[0].replace(os.path.basename(files[0]), ''))
     total = len(files)
     for index, filename in enumerate(files):
+        filename = os.path.basename(filename)
         index = index + 1
         rate = int(index / total * 100)
         print('{filename}  {rate} {none} {index}/{total} {percent} %'\
@@ -67,5 +71,5 @@ if __name__ == '__main__':
                 break
     else:
         print('Fail, params error, try:')
-        print('python3', args[0], 'your_m3u8_url', 'your_local_dir\n')
+        print('python3', args[0], 'your_m3u8_url', 'your_local_dir')
     # get_m3u8('https://bilibili.com-h-bilibili.com/20190223/8039_6a310f25/1000k/hls/index.m3u8')
